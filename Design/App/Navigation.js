@@ -180,6 +180,14 @@ const Navigation = ({ currentView, setView }) => {
                 }
               )
             ] }),
+            /* @__PURE__ */ jsx(
+              ToggleItem,
+              {
+                label: "DarkMode",
+                value: settings.darkMode,
+                onChange: () => updateSettings({ darkMode: !settings.darkMode })
+              }
+            ),
             /* @__PURE__ */ jsxs("div", { className: "opacity-50", children: [
               /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2 text-slate-300 mb-2", children: [
                 /* @__PURE__ */ jsx(Volume2, { className: "w-4 h-4" }),
