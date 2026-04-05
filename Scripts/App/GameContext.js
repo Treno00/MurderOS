@@ -18,6 +18,7 @@ const GameProvider = ({ children }) => {
   const [settings, setSettings] = useState({
     themeId: "AGENCY",
     nightMode: false,
+    darkMode: true,
     sfxVolume: 50,
     autoFill: false,
     showDownloadBtn: false,
@@ -98,12 +99,29 @@ const GameProvider = ({ children }) => {
         break;
     }
     root.style.setProperty("--agency-main", mainColor);
-    if (settings.nightMode) {
-      document.body.style.filter = "brightness(0.7) contrast(1.1) sepia(0.2)";
+
+    let rootFilters = [];
+    
+    if (!settings.darkMode) {
+      rootFilters.push("invert(1) hue-rotate(180deg)");
+      root.classList.add("light-mode");
     } else {
-      document.body.style.filter = "none";
+      root.classList.remove("light-mode");
     }
-  }, [settings.themeId, settings.nightMode]);
+
+    if (settings.nightMode) {
+      rootFilters.push("brightness(0.7) contrast(1.1) sepia(0.2)");
+    }
+
+    if (rootFilters.length > 0) {
+      root.style.filter = rootFilters.join(" ");
+    } else {
+      root.style.filter = "none";
+    }
+
+    // Reset old body filter if any existed
+    document.body.style.filter = "none";
+  }, [settings.themeId, settings.nightMode, settings.darkMode]);
   const toggleNav = () => setIsNavOpen((prev) => !prev);
   const toggleVictimPanel = () => setIsVictimPanelOpen((prev) => !prev);
   const toggleConnectionBoard = () => setIsConnectionBoardOpen((prev) => !prev);
